@@ -1,0 +1,37 @@
+GRN='\033[0;32m'
+RED='\033[4;31m'
+NC='\033[0m' # No Color
+
+function echo_if {
+  if [ $1 == 1 ]; then
+    echo_pass $2
+  else
+    echo_fail $2
+  fi
+}
+
+function echo_fail {
+  echo -e "${RED} ${1} ${NC}"
+}
+
+function echo_pass {
+  echo -e "${GRN}✔ ${NC}"
+}
+
+function program_is_installed {
+  local return_=1
+  type $1 >/dev/null 2>&1 || { local return_=0; }
+  echo "$return_"
+}
+
+function npm_package_is_installed {
+  local return_=1
+  ls node_modules | grep $1 >/dev/null 2>&1 || { local return_=0; }
+  echo "$return_"
+}
+
+echo "Checking for node... $(echo_if $(program_is_installed node))"
+echo -e "${GRN}Installing...${NC}\n"
+npm install
+echo -e "${GRN}Check above for any npm ERR! messages and if none exist, you are good to go${NC}\n"
+npm start
