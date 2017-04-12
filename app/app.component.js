@@ -8,16 +8,26 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
+var http_1 = require('@angular/http');
 var core_1 = require('@angular/core');
 var AppComponent = (function () {
-    function AppComponent() {
+    function AppComponent(http) {
+        this.http = http;
     }
+    AppComponent.prototype.ngOnInit = function () {
+        this.getData();
+    };
+    AppComponent.prototype.getData = function () {
+        var _this = this;
+        this.http.get('http://localhost/angular2/service.php')
+            .subscribe(function (res) { return _this.data = res.json(); });
+    };
     AppComponent = __decorate([
         core_1.Component({
             selector: 'my-app',
-            template: '<h1>Jadii Lelz\'s First Angular 2 App</h1>'
+            template: "<ul>\n\t\t<li *ngFor=\"let person of data\">\n\t\t   {{person.id}} - {{person.first_name}}\n\t\t</li>\n\t     </ul>"
         }), 
-        __metadata('design:paramtypes', [])
+        __metadata('design:paramtypes', [http_1.Http])
     ], AppComponent);
     return AppComponent;
 }());

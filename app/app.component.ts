@@ -1,6 +1,27 @@
-import { Component } from '@angular/core';
+import {Http, Response} from '@angular/http';
+import {Injectable, Component } from '@angular/core';
+
 @Component({
     selector: 'my-app',
-    template: '<h1>Jadissa\'s First Angular 2 App</h1>'
+    template: `<ul>
+		<li *ngFor="let person of data">
+		   {{person.id}} - {{person.first_name}}
+		</li>
+	     </ul>`
 })
-export class AppComponent { }
+export class AppComponent {
+
+    private data;
+
+    constructor(private http:Http){
+    }
+
+    ngOnInit(){
+        this.getData();
+    }
+
+    getData(){
+        this.http.get('http://localhost/angular2/service.php')
+            .subscribe(res => this.data = res.json());
+    }
+}
